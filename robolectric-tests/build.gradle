@@ -1,6 +1,7 @@
 evaluationDependsOn(":app")
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 
 dependencies {
     def androidModule = project(':app')
@@ -14,6 +15,9 @@ dependencies {
 
     testCompile 'junit:junit:4.+'
     testCompile 'org.robolectric:robolectric:2.2'
+    testCompile "org.codehaus.groovy:groovy-all:1.8.6"
+    testCompile 'org.robospock:robospock:0.4.4'
+    testCompile "org.mockito:mockito-all:1.9.5"
 }
 
 tasks.withType(Test) {
