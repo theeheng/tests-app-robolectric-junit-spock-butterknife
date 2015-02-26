@@ -13,7 +13,7 @@ import org.robolectric.util.ActivityController;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
-public class MyAndroidClassTest2 {
+public class MyAndroidClassTest {
 
     @Test
     public void testWhenActivityCreatedHelloTextViewIsVisible() throws Exception {
