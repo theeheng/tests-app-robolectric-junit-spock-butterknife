@@ -1,15 +1,14 @@
 package com.blundell.tests
 
-import android.widget.Button;
+import android.widget.Button
+import com.blundell.tests.MyActivity
+import com.blundell.tests.shadow.MyActivityManagerShadow
 import org.robolectric.Robolectric
 import org.robolectric.annotation.Config
-import pl.polidea.robospock.RoboSpecification
+import org.robospock.GradleRoboSpecification
 
-/**
- * Created by htan on 26/02/2015.
- */
-@Config(manifest = "../app/src/main/AndroidManifest.xml")
-public class MyActivitySpockTest extends RoboSpecification {
+@Config(shadows = [MyActivityManagerShadow], constants = BuildConfig)
+class DefaultSpec extends GradleRoboSpecification {
 
     MyActivity myActivity
 

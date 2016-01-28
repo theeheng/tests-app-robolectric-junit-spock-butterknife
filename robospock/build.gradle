@@ -1,0 +1,47 @@
+apply {
+    plugin 'groovy'
+    plugin 'signing'
+    plugin 'idea'
+}
+
+configurations {
+    provided
+}
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+        runtimeClasspath += configurations.provided
+    }
+    test {
+        compileClasspath += configurations.provided
+        runtimeClasspath += configurations.provided
+    }
+}
+
+dependencies {
+    compile "org.spockframework:spock-core:1.0-groovy-2.4"
+
+    // Android part
+    compile "org.robolectric:robolectric:3.0"
+    provided 'com.intellij:annotations:12.0'
+    provided 'org.robolectric:android-all:5.0.0_r2-robolectric-1'
+    testCompile 'org.robolectric:android-all:5.0.0_r2-robolectric-1'
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        //, "standardOut", "standardError"
+
+        lifecycle {
+            exceptionFormat "full"
+        }
+    }
+}
+
+idea {
+    module {
+        scopes.PROVIDED.plus += [configurations.provided]
+    }
+}
+

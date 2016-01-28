@@ -1,25 +1,48 @@
 package com.blundell.tests;
 
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blundell.RobolectricGradleTestRunner;
-
+import org.junit.After;
+import org.junit.Before;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 import org.robolectric.util.ActivityController;
 
 import static org.junit.Assert.assertEquals;
 
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 @RunWith(RobolectricGradleTestRunner.class)
 public class MyAndroidClassTest {
 
+    private ActivityController<MyActivity> controller;
+    private MyActivity activity;
+
+    @Before
+    public void setUp() {
+        // Return ActivityController that can be used to create Activity
+        controller = Robolectric.buildActivity(MyActivity.class);
+        activity = controller
+                .create()
+                .start()
+                .resume()
+                .visible()
+                .get();
+    }
+
+    @After
+    public void tearDown() {
+        // Destory activity in every test
+        controller.destroy();
+    }
+
     @Test
     public void testWhenActivityCreatedHelloTextViewIsVisible() throws Exception {
-        MyActivity activity = new MyActivity();
-
-        ActivityController.of(activity).attach().create();
 
         int visibility = activity.findViewById(R.id.my_hello_text_view).getVisibility();
         assertEquals(visibility, View.VISIBLE);
@@ -27,9 +50,6 @@ public class MyAndroidClassTest {
 
     @Test
     public void testWhenActivityCreatedHelloTextViewShouldDisplayHelloWorld() throws Exception {
-        MyActivity activity = new MyActivity();
-
-        ActivityController.of(activity).attach().create();
 
         String helloText = ((TextView)activity.findViewById(R.id.my_hello_text_view)).getText().toString();
 
