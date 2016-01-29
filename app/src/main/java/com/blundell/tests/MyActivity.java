@@ -3,11 +3,16 @@ package com.blundell.tests;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.blundell.tests.controller.ContactsProvider;
+import com.blundell.tests.model.Contact;
+import com.blundell.tests.model.Contacts;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -15,17 +20,27 @@ import butterknife.OnClick;
 
 public class MyActivity extends Activity {
 
+    private static final String TAG = "MyActivity";
+
     @InjectView(R.id.my_hello_text_view)
     TextView my_hello_text_view;
 
     @InjectView(R.id.button)
     Button button;
 
+    @InjectView(R.id.button2)
+    Button button2;
+
+    private ContactsProvider contactsProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
         ButterKnife.inject(this);
+
+        contactsProvider = new ContactsProvider(getString(R.string.contacts_json_endpoint));
+
     }
 
 
@@ -53,5 +68,39 @@ public class MyActivity extends Activity {
     {
         Resources rs = getResources();
         my_hello_text_view.setText(rs.getString(R.string.button_clicked));
+    }
+
+    @OnClick(R.id.button2)
+    public void Button2Click(View view)
+    {
+        contactsProvider.fetchContacts(new ContactsProvider.ContactProviderListener() {
+            @Override
+            public void onContacts(Contacts contacts) {
+                Log.d(TAG, String.format("fetched and parsed %d contacts: ", contacts.getContacts().size()));
+                updateContacts(contacts);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Log.e(TAG, "failed fetching json data", throwable);
+            }
+        });
+    }
+
+    private void updateContacts(final Contacts contacts) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if(contacts.getContacts().size() > 0) {
+
+                    my_hello_text_view.setText("");
+                    for (Contact c : contacts.getContacts()) {
+                        my_hello_text_view.append(c.toString() + "\n");
+                    }
+                }
+            }
+        });
     }
 }

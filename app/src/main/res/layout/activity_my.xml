@@ -21,4 +21,13 @@
         android:layout_below="@+id/my_hello_text_view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Contact"
+        android:id="@+id/button2"
+        android:layout_below="@+id/my_hello_text_view"
+        android:layout_toRightOf="@+id/button"
+         />
 </RelativeLayout>

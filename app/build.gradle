@@ -42,6 +42,10 @@ android {
         exclude 'LICENSE.txt'
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     testOptions.unitTests.all {
         testLogging {
             events "passed", "skipped", "failed"
@@ -57,9 +61,14 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.jakewharton:butterknife:5.1.2'
-    testCompile project(':robospock')
-
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.koushikdutta.async:androidasync:2.1.6'
+    compile 'com.google.code.gson:gson:2.3.1'
+
+
+    testCompile 'cglib:cglib-nodep:3.1'
+    testCompile 'org.objenesis:objenesis:2.2'
+    testCompile project(':robospock')
 
     androidTestCompile 'com.android.support.test:runner:0.2'
     androidTestCompile 'com.android.support.test:rules:0.2'
